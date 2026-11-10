@@ -84,3 +84,19 @@ suspend fun downloadToDownloads(
         dir.deleteRecursively()
     }
 }
+
+/** yt-dlp stderr mixes warnings with the real failure; show the ERROR line(s) first. */
+fun friendlyError(e: Throwable): String {
+    val raw = e.message ?: e.javaClass.simpleName
+    val lines = raw.lines().map { it.trim() }.filter { it.isNotEmpty() }
+    val errors = lines.filter { it.startsWith("ERROR") }
+    val pick = errors.ifEmpty { lines.takeLast(3) }
+    return (if (pick.isEmpty()) raw else pick.joinToString("\n")).take(400)
+}
+
+/** Updates the bundled yt-dlp in place (stored in app files, survives restarts). */
+suspend fun updateYtDlp(ctx: Context): String = withContext(Dispatchers.IO) {
+    val status = YoutubeDL.getInstance().updateYoutubeDL(ctx)
+    val version = YoutubeDL.getInstance().version(ctx) ?: "unknown"
+    "yt-dlp $version ($status)"
+}
