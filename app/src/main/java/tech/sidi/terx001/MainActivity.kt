@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private val Emerald = Color(0xFF10B981)
 
@@ -63,6 +68,13 @@ private fun HomeScreen(initError: String?) {
     var progress by remember { mutableStateOf(0f) }
     var status by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
+    var ytVersion by remember { mutableStateOf("...") }
+
+    LaunchedEffect(Unit) {
+        ytVersion = withContext(Dispatchers.IO) {
+            try { YoutubeDL.getInstance().version(ctx) ?: "unknown" } catch (e: Exception) { "unknown" }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -106,13 +118,37 @@ private fun HomeScreen(initError: String?) {
                         status = "Saved to $saved"
                     } catch (e: Exception) {
                         isError = true
-                        status = (e.message ?: e.javaClass.simpleName).take(400)
+                        status = friendlyError(e)
                     } finally {
                         busy = false
                     }
                 }
             },
         ) { Text(if (busy) "Downloading..." else "Download") }
+
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(
+            enabled = !busy && initError == null,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                busy = true
+                isError = false
+                status = "Updating yt-dlp..."
+                scope.launch {
+                    try {
+                        status = updateYtDlp(ctx)
+                        ytVersion = withContext(Dispatchers.IO) {
+                            try { YoutubeDL.getInstance().version(ctx) ?: "unknown" } catch (e: Exception) { "unknown" }
+                        }
+                    } catch (e: Exception) {
+                        isError = true
+                        status = "Update failed: " + friendlyError(e)
+                    } finally {
+                        busy = false
+                    }
+                }
+            },
+        ) { Text("Update yt-dlp (current: $ytVersion)") }
 
         Spacer(Modifier.height(16.dp))
         if (busy) LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth())
