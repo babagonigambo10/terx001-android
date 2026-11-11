@@ -29,4 +29,4 @@ TERX001 is a general-purpose tool and does not knowingly collect any information
 If this policy changes, the new version will be published with the app's source code.
 
 ## Contact
-[SUPPORT CONTACT - owner to fill in before publishing]
+Questions or problems: open an issue at https://github.com/babagonigambo10/terx001-android/issues
