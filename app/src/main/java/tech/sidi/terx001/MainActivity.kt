@@ -1,10 +1,13 @@
 package tech.sidi.terx001
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,10 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.yausername.youtubedl_android.YoutubeDL
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private val Emerald = Color(0xFF10B981)
 
@@ -40,6 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val initError = (application as TerxApp).initError
+        val sharedUrl = if (intent?.action == Intent.ACTION_SEND) {
+            intent.getStringExtra(Intent.EXTRA_TEXT)?.let { extractUrl(it) }
+        } else null
         setContent {
             MaterialTheme(
                 colorScheme = darkColorScheme(
@@ -52,27 +55,61 @@ class MainActivity : ComponentActivity() {
                 )
             ) {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    HomeScreen(initError)
+                    HomeScreen(initError, sharedUrl ?: "")
                 }
             }
         }
     }
 }
 
+private fun openFile(ctx: Context, f: SavedFile) {
+    try {
+        val i = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(f.uri, f.mime)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        ctx.startActivity(i)
+    } catch (e: Exception) {
+        // No app can open it; the file is still in Downloads.
+    }
+}
+
+private fun shareFile(ctx: Context, f: SavedFile) {
+    try {
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = f.mime
+            putExtra(Intent.EXTRA_STREAM, f.uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        val chooser = Intent.createChooser(send, "Share video")
+        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ctx.startActivity(chooser)
+    } catch (e: Exception) {
+        // Ignore: nothing to share with.
+    }
+}
+
 @Composable
-private fun HomeScreen(initError: String?) {
+private fun HomeScreen(initError: String?, initialUrl: String) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
-    var url by remember { mutableStateOf("") }
+    var url by remember { mutableStateOf(initialUrl) }
     var busy by remember { mutableStateOf(false) }
     var progress by remember { mutableStateOf(0f) }
     var status by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
     var ytVersion by remember { mutableStateOf("...") }
+    var saved by remember { mutableStateOf<SavedFile?>(null) }
 
+    // On launch: show the yt-dlp version, and refresh it if the last update is over a day old.
     LaunchedEffect(Unit) {
-        ytVersion = withContext(Dispatchers.IO) {
-            try { YoutubeDL.getInstance().version(ctx) ?: "unknown" } catch (e: Exception) { "unknown" }
+        ytVersion = readYtVersion(ctx)
+        if (initError == null) {
+            busy = true
+            status = "Checking for yt-dlp updates..."
+            if (autoUpdateIfDue(ctx)) ytVersion = readYtVersion(ctx)
+            status = ""
+            busy = false
         }
     }
 
@@ -83,13 +120,17 @@ private fun HomeScreen(initError: String?) {
         verticalArrangement = Arrangement.Center,
     ) {
         Text("TERX001", style = MaterialTheme.typography.headlineLarge, color = Emerald)
-        Text("SIDI TECH - TikTok spike build", style = MaterialTheme.typography.bodyMedium)
+        Text("SIDI TECH - video downloader (test build)", style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(24.dp))
 
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("TikTok link") },
+            label = { Text("Video link") },
+            supportingText = {
+                val p = platformOf(url)
+                if (p != null) Text("Detected: $p")
+            },
             singleLine = true,
             enabled = !busy,
             modifier = Modifier.fillMaxWidth(),
@@ -100,22 +141,24 @@ private fun HomeScreen(initError: String?) {
             enabled = !busy && initError == null,
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                if (!isTikTokUrl(url)) {
+                if (platformOf(url) == null) {
                     isError = true
-                    status = "Paste a full https TikTok link, for example https://vm.tiktok.com/..."
+                    status = "Paste a full https link from TikTok, Instagram, Facebook, X, YouTube, Pinterest, Reddit, Snapchat or Threads."
                     return@Button
                 }
                 busy = true
                 isError = false
+                saved = null
                 progress = 0f
                 status = "Starting..."
                 scope.launch {
                     try {
-                        val saved = downloadToDownloads(ctx, url) { p, _ ->
+                        val result = downloadToDownloads(ctx, url) { p, _ ->
                             progress = (p / 100f).coerceIn(0f, 1f)
                             status = "Downloading... " + p.toInt() + "%"
                         }
-                        status = "Saved to $saved"
+                        saved = result
+                        status = "Saved to " + result.path
                     } catch (e: Exception) {
                         isError = true
                         status = friendlyError(e)
@@ -124,7 +167,7 @@ private fun HomeScreen(initError: String?) {
                     }
                 }
             },
-        ) { Text(if (busy) "Downloading..." else "Download") }
+        ) { Text(if (busy) "Please wait..." else "Download") }
 
         Spacer(Modifier.height(8.dp))
         OutlinedButton(
@@ -137,9 +180,7 @@ private fun HomeScreen(initError: String?) {
                 scope.launch {
                     try {
                         status = updateYtDlp(ctx)
-                        ytVersion = withContext(Dispatchers.IO) {
-                            try { YoutubeDL.getInstance().version(ctx) ?: "unknown" } catch (e: Exception) { "unknown" }
-                        }
+                        ytVersion = readYtVersion(ctx)
                     } catch (e: Exception) {
                         isError = true
                         status = "Update failed: " + friendlyError(e)
@@ -163,6 +204,14 @@ private fun HomeScreen(initError: String?) {
                 status,
                 color = if (isError) MaterialTheme.colorScheme.error else Emerald,
             )
+        }
+        val s = saved
+        if (s != null && !busy) {
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+                Button(onClick = { openFile(ctx, s) }, modifier = Modifier.weight(1f)) { Text("Open") }
+                OutlinedButton(onClick = { shareFile(ctx, s) }, modifier = Modifier.weight(1f)) { Text("Share") }
+            }
         }
     }
 }
