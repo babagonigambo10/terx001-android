@@ -46,7 +46,7 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 3. Release security (signing-key strategy) | DONE (key + secrets + CI signing) | Key and 4 secrets created 2026-11-11; CI signs on v* tags: 6322122, 559d30a, 63f6a6d; version 0.4.0 6c621cf; tag v0.4.0 -> 63f6a6d. Owner must keep their backup copy safe. |
 | 4. Public product prep (privacy policy, terms/copyright guidance, support contact, store text, screenshots, release notes, checksums) | MOSTLY DONE | docs/PRIVACY.md (support contact = GitHub Issues, 3455add), docs/TERMS.md, docs/STORE_LISTING.md, docs/RELEASE_NOTES.md; README has the signing fingerprint (4cd9a39). Missing: phone screenshots. |
 | 5. Distribution readiness (Google Play, Aptoide, APKPure, Softonic review; downloader copyright and platform-terms risk) | NOT STARTED | Research only. No submissions. |
-| 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | WAITING FOR OWNER CONFIRMATION | Owner replied "All 1,2,3 approved, option B". Key route B was executed. The three launch actions were NOT executed: the reply was ambiguous and going public exposes the owner's commit email (babsonsidi@gmail.com) in git history. Ask for one explicit confirmation. |
+| 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | WAITING FOR OWNER CONFIRMATION | Owner replied "All 1,2,3 approved, option B". Key route B was executed. The three launch actions were NOT executed: the reply was ambiguous and going public exposes the owner's commit email in git history. Ask for one explicit confirmation. |
 
 ## 3. Last action and next step
 - Last action: created the release key (Option B), set the four secrets, made CI sign `v*` tags, bumped to 0.4.0,
@@ -95,7 +95,7 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
   and link the tag next to every published binary. Do not create release objects without approval.
 - Release key exists (see section 1). Key was shown to the owner once in chat as the backup; the owner must store it safely.
 - Screenshots not taken; Stage 5 store-policy research not done; repo still private; no GitHub Release published.
-- Git commit history contains the owner's email (babsonsidi@gmail.com); making the repo public exposes it.
+- Git commit history contains the owner's email; making the repo public exposes it.
 - Known limits for a public release: arm64-only (older 32-bit phones excluded), minSdk 29 (Android 10+),
   no MP3 (FFmpeg would add roughly 10-15 MB), Instagram often needs login, YouTube blocks downloaders most.
 - History screen only lists files saved by the current install (Android scoped storage).
