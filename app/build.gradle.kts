@@ -28,6 +28,17 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
+        // Real release key. Only available in CI on version tags (from GitHub secrets, never in the repo).
+        create("release") {
+            val path = System.getenv("RELEASE_KEYSTORE_PATH")
+            if (path != null) {
+                storeFile = file(path)
+                storeType = "pkcs12"
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+                keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
@@ -35,9 +46,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // TEMPORARY: signed with the shared debug key for testing only.
+            // Signed with the real release key on version tags; otherwise with the shared test key.
             // A separate real release key (kept in GitHub secrets) comes before any public release.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (System.getenv("RELEASE_KEYSTORE_PATH") != null) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }
 
