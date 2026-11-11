@@ -27,6 +27,9 @@ jobs:
       - name: Build debug and release APKs
         run: gradle assembleDebug assembleRelease --stacktrace
 
+      - name: List runtime dependencies (for licence notices)
+        run: gradle :app:dependencies --configuration releaseRuntimeClasspath --quiet
+
       - name: APK sizes and checksums
         run: |
           ls -l app/build/outputs/apk/debug/ app/build/outputs/apk/release/
