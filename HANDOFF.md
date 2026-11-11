@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-11, after commit 13a1741 (HEAD when this file was first written).
+Last updated: 2026-11-11, after the docs commits 6a2528d, f4db9e2, 356e4de, fd19d8b, abd0c3d.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -40,21 +40,24 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | --- | --- | --- |
 | 1. Finish the current app | DONE | Scaffold to 0.3.1: 8fc66d5 ... 99bd5f2. Key points: working TikTok spike 21de22e; yt-dlp update + error text b01b158, 35c136f; shared debug key 9684c32, 1cabc2a; minified release build 917971d; all platforms + auto-update 557c3ff, a883323; icon 07b6ec9, 5f760bf (0.2.0); history screen cde85f7, 4b0031f, 70591da (0.3.0); status-bar spacing 9b66672, 99bd5f2 (0.3.1). |
 | 2. GPL-3.0 compliance | IN PROGRESS (files done, verification open) | LICENSE 5d855db; SPDX headers on the 4 Kotlin files ab6ca1b, 3a16aa9, d1939eb, 9df9d29; README licence + source sections c2d6525; CI prints dependency list ec788f8; NOTICE.md 13a1741. Still open: see section 5. |
-| 3. Release security (signing-key strategy) | NOT STARTED; planning doc only | Planning is allowed (e.g. write docs/RELEASE_SECURITY_PLAN.md). Creating the key or adding GitHub secrets is WAITING FOR OWNER APPROVAL. |
-| 4. Public product prep (privacy policy, terms/copyright guidance, support contact, store text, screenshots, release notes, checksums) | NOT STARTED | Docs can be drafted in the private repo. |
+| 3. Release security (signing-key strategy) | PLAN DRAFTED; execution WAITING FOR OWNER APPROVAL | docs/RELEASE_SECURITY_PLAN.md (6a2528d). Creating the key and adding GitHub secrets are gated. |
+| 4. Public product prep (privacy policy, terms/copyright guidance, support contact, store text, screenshots, release notes, checksums) | DRAFTS DONE; owner input needed | docs/PRIVACY.md (f4db9e2), docs/TERMS.md (356e4de), docs/STORE_LISTING.md (fd19d8b), docs/RELEASE_NOTES.md (abd0c3d). Missing: support contact, screenshots, checksums (at release time). |
 | 5. Distribution readiness (Google Play, Aptoide, APKPure, Softonic review; downloader copyright and platform-terms risk) | NOT STARTED | Research only. No submissions. |
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | WAITING FOR OWNER APPROVAL | Each gated action below needs its own explicit go-ahead. |
 
 ## 3. Last action and next step
-- Last action: wrote this HANDOFF.md and AGENTS.md; checked LICENSE exists and which files lack headers
-  (section 5). Before that: finished Stage 2 files and asked the owner to choose the next task.
-- Next step: waiting for the owner to choose one of:
-  (a) Stage 3 planning: create `docs/RELEASE_SECURITY_PLAN.md` (plan only: one permanent key, backups in
-      two places outside GitHub, CI-only secret copy; NO key generation, NO secrets), or
-  (b) Stage 4 drafts: `docs/PRIVACY.md`, store listing text, `docs/RELEASE_NOTES.md`.
-  Do not start either until the owner picks. Then update this file in the same session.
-- If you have to resume cold: read this file, `README.md`, `NOTICE.md`, `.github/workflows/build.yml`,
-  and `app/build.gradle.kts`; check the latest Actions run; then ask the owner what to do next.
+- Last action: drafted the Stage 3 plan and the Stage 4 documents (all in `docs/`, plan/drafts only; nothing executed).
+- Next step: everything left is gated or needs owner input. In order:
+  1. Owner supplies a public support contact and confirms the copyright name (replace the
+     `[SUPPORT CONTACT ...]` placeholder in docs/PRIVACY.md).
+  2. Owner picks Option A (Termux, recommended) or Option B (Claude generates) in docs/RELEASE_SECURITY_PLAN.md and approves
+     key creation and the four GitHub secrets.
+  3. After approval: update the workflow to sign on `v*` tags using the secrets, bump the version
+     (suggested 0.4.0), tag it, let CI build, verify the signature.
+  4. Owner approves, separately: make the repo public; publish the APK; post on @TERX001.
+  Do not do any of 2-4 without the owner's explicit approval for that exact action.
+- If you have to resume cold: read this file, `docs/RELEASE_SECURITY_PLAN.md`, `README.md`,
+  `NOTICE.md`, `.github/workflows/build.yml` and `app/build.gradle.kts`; check the latest Actions run; ask the owner.
 
 ## 4. Owner decisions
 - Public release direction under GPL-3.0 only (`GPL-3.0-only`).
@@ -91,7 +94,7 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 - No git tags or GitHub Releases exist. GPL source-for-binary plan: tag each release (for example `v0.3.1`)
   and link the tag next to every published binary. Do not create release objects without approval.
 - Real release signing key and secrets: not created (gated). Release builds are currently signed with the test key.
-- Privacy policy, terms, support contact, screenshots, store text: not written.
+- Support contact is a placeholder in docs/PRIVACY.md; screenshots not taken; Stage 5 store-policy research not done.
 - Known limits for a public release: arm64-only (older 32-bit phones excluded), minSdk 29 (Android 10+),
   no MP3 (FFmpeg would add roughly 10-15 MB), Instagram often needs login, YouTube blocks downloaders most.
 - History screen only lists files saved by the current install (Android scoped storage).
