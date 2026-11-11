@@ -1,6 +1,6 @@
 # Release security plan (Stage 3) - PLAN ONLY
 
-Nothing in this document has been executed. No key exists and no GitHub secret has been added.
+STATUS (2026-11-11): steps 1-6 below were executed with the owner's approval (Option B, RSA 2048, alias terx001). The four secrets exist; CI signs v* tags; v0.4.0 was built and its signature verified. Steps 5-7 of the release checklist remain pending the owner's confirmation.
 Every step marked GATED needs the owner's explicit approval for that step.
 
 ## Why this matters
