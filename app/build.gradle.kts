@@ -18,6 +18,18 @@ android {
         ndk { abiFilters += listOf("arm64-v8a") }
     }
 
+    signingConfigs {
+        // Shared DEBUG key (not a secret) so every CI build installs over the previous one.
+        // The release key will be separate and kept in GitHub secrets.
+        getByName("debug") {
+            storeFile = file("debug-shared.p12")
+            storeType = "pkcs12"
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
