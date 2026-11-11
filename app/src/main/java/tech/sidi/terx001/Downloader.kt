@@ -2,6 +2,7 @@ package tech.sidi.terx001
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.provider.MediaStore
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -10,28 +11,47 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URI
 
-/** Spike scope: https links on tiktok.com and its subdomains (vm., vt., www.) only. */
-fun isTikTokUrl(raw: String): Boolean {
+data class SavedFile(val uri: Uri, val mime: String, val path: String)
+
+private val PLATFORMS = listOf(
+    "TikTok" to listOf("tiktok.com"),
+    "Instagram" to listOf("instagram.com"),
+    "Facebook" to listOf("facebook.com", "fb.watch", "fb.com"),
+    "X" to listOf("x.com", "twitter.com"),
+    "YouTube" to listOf("youtube.com", "youtu.be"),
+    "Pinterest" to listOf("pinterest.com", "pin.it"),
+    "Reddit" to listOf("reddit.com", "redd.it"),
+    "Snapchat" to listOf("snapchat.com"),
+    "Threads" to listOf("threads.net", "threads.com"),
+)
+
+/** Returns the platform name for an https link on a supported site, else null. */
+fun platformOf(raw: String): String? {
     val uri = try {
         URI(raw.trim())
     } catch (e: Exception) {
-        return false
+        return null
     }
-    if (uri.scheme != "https") return false
-    val host = uri.host?.lowercase() ?: return false
-    return host == "tiktok.com" || host.endsWith(".tiktok.com")
+    if (uri.scheme != "https") return null
+    val host = uri.host?.lowercase() ?: return null
+    for ((name, domains) in PLATFORMS) {
+        if (domains.any { host == it || host.endsWith(".$it") }) return name
+    }
+    return null
 }
+
+/** Pulls the first https link out of shared text. */
+fun extractUrl(text: String): String? = Regex("https://\\S+").find(text)?.value
 
 /**
  * Downloads with yt-dlp into app cache, then copies into the public
  * Download/TERX001 folder through MediaStore (no storage permission needed).
- * Returns the saved path for display.
  */
 suspend fun downloadToDownloads(
     ctx: Context,
     url: String,
     onProgress: (Float, Long) -> Unit,
-): String = withContext(Dispatchers.IO) {
+): SavedFile = withContext(Dispatchers.IO) {
     val dir = File(ctx.cacheDir, "dl")
     dir.deleteRecursively()
     dir.mkdirs()
@@ -79,7 +99,7 @@ suspend fun downloadToDownloads(
             resolver.delete(target, null, null)
             throw e
         }
-        "Download/TERX001/$displayName"
+        SavedFile(target, mime, "Download/TERX001/$displayName")
     } finally {
         dir.deleteRecursively()
     }
@@ -99,4 +119,26 @@ suspend fun updateYtDlp(ctx: Context): String = withContext(Dispatchers.IO) {
     val status = YoutubeDL.getInstance().updateYoutubeDL(ctx)
     val version = YoutubeDL.getInstance().version(ctx) ?: "unknown"
     "yt-dlp $version ($status)"
+}
+
+suspend fun readYtVersion(ctx: Context): String = withContext(Dispatchers.IO) {
+    try {
+        YoutubeDL.getInstance().version(ctx) ?: "bundled"
+    } catch (e: Exception) {
+        "bundled"
+    }
+}
+
+/** Runs the yt-dlp update at most once per 24 hours. Returns true if an update ran. */
+suspend fun autoUpdateIfDue(ctx: Context): Boolean = withContext(Dispatchers.IO) {
+    val prefs = ctx.getSharedPreferences("terx", Context.MODE_PRIVATE)
+    val now = System.currentTimeMillis()
+    if (now - prefs.getLong("last_update", 0L) < 24L * 60 * 60 * 1000) return@withContext false
+    try {
+        YoutubeDL.getInstance().updateYoutubeDL(ctx)
+        prefs.edit().putLong("last_update", now).apply()
+        true
+    } catch (e: Exception) {
+        false
+    }
 }
