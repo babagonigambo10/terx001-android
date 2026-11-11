@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,14 +57,20 @@ class MainActivity : ComponentActivity() {
                 )
             ) {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    HomeScreen(initError, sharedUrl ?: "")
+                    var screen by remember { mutableStateOf(0) }
+                    BackHandler(enabled = screen == 1) { screen = 0 }
+                    if (screen == 1) {
+                        HistoryScreen(onBack = { screen = 0 })
+                    } else {
+                        HomeScreen(initError, sharedUrl ?: "", onOpenHistory = { screen = 1 })
+                    }
                 }
             }
         }
     }
 }
 
-private fun openFile(ctx: Context, f: SavedFile) {
+internal fun openFile(ctx: Context, f: SavedFile) {
     try {
         val i = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(f.uri, f.mime)
@@ -74,7 +82,7 @@ private fun openFile(ctx: Context, f: SavedFile) {
     }
 }
 
-private fun shareFile(ctx: Context, f: SavedFile) {
+internal fun shareFile(ctx: Context, f: SavedFile) {
     try {
         val send = Intent(Intent.ACTION_SEND).apply {
             type = f.mime
@@ -90,10 +98,10 @@ private fun shareFile(ctx: Context, f: SavedFile) {
 }
 
 @Composable
-private fun HomeScreen(initError: String?, initialUrl: String) {
+private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
-    var url by remember { mutableStateOf(initialUrl) }
+    var url by rememberSaveable { mutableStateOf(initialUrl) }
     var busy by remember { mutableStateOf(false) }
     var progress by remember { mutableStateOf(0f) }
     var status by remember { mutableStateOf("") }
@@ -190,6 +198,13 @@ private fun HomeScreen(initError: String?, initialUrl: String) {
                 }
             },
         ) { Text("Update yt-dlp (current: $ytVersion)") }
+
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(
+            enabled = !busy,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onOpenHistory,
+        ) { Text("Download history") }
 
         Spacer(Modifier.height(16.dp))
         if (busy) LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth())
