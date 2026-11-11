@@ -36,3 +36,12 @@ The complete corresponding source for every released APK is this repository, at 
 matching the release version (for example `v0.3.1`). Build it with the included Gradle
 configuration and the GitHub Actions workflow in `.github/workflows/build.yml`.
 No signing key or secret is needed to build an unsigned or debug-signed APK.
+
+## Verifying a release
+Official releases are signed with one permanent key. The certificate fingerprint (SHA-256) is:
+
+`11:16:20:D7:5D:D9:75:51:6A:20:DD:72:B7:7A:23:CC:B3:CF:66:53:8D:ED:1D:FE:AB:72:1E:30:F0:82:D5:E0`
+
+Check an APK with `apksigner verify --print-certs app-release.apk`. The release page also lists the
+APK's SHA-256 checksum. If the fingerprint differs, do not install it. Builds signed with a different
+key (including test builds) will not update an official install.
