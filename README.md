@@ -23,6 +23,16 @@ Download it from the run page under **Artifacts** > `terx001-debug-apk`
 - yt-dlp self-update from inside the app (needed long term, sites change often).
 - Other platforms, quality choice, history, branding, release signing.
 
-## License note
-youtubedl-android is GPL-3.0. Distributing this app publicly means releasing its
-source under a GPL-compatible license. Private testing is fine.
+## License
+TERX001 is free software, released under the **GNU General Public License v3.0 only**
+(see [LICENSE](LICENSE)). Copyright (C) 2026 SIDI TECH.
+
+It is built on [youtubedl-android](https://github.com/yausername/youtubedl-android) (GPL-3.0),
+which bundles yt-dlp. Third-party components and their licences are listed in
+[NOTICE.md](NOTICE.md).
+
+## Source code
+The complete corresponding source for every released APK is this repository, at the git tag
+matching the release version (for example `v0.3.1`). Build it with the included Gradle
+configuration and the GitHub Actions workflow in `.github/workflows/build.yml`.
+No signing key or secret is needed to build an unsigned or debug-signed APK.
