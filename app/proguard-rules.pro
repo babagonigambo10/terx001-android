@@ -1,0 +1,6 @@
+-keep class com.yausername.** { *; }
+-keep class com.fasterxml.jackson.** { *; }
+-keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
+-dontwarn com.fasterxml.jackson.databind.**
+-dontwarn java.beans.**
+-dontwarn org.w3c.dom.bootstrap.**
