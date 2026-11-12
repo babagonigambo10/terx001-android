@@ -43,8 +43,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // Code shrinking is OFF: R8 broke the bundled engine's first-run unzip (commons-compress).
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             // Signed with the real release key on version tags; otherwise with the shared test key.
             // A separate real release key (kept in GitHub secrets) comes before any public release.
