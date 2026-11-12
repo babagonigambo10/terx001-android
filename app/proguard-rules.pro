@@ -4,3 +4,11 @@
 -dontwarn com.fasterxml.jackson.databind.**
 -dontwarn java.beans.**
 -dontwarn org.w3c.dom.bootstrap.**
+# R8 broke commons-compress (class registry instantiated by reflection) on first-run unzip of the bundled engine.
+-keep class org.apache.commons.** { *; }
+-keepclassmembers class org.apache.commons.** { *; }
+-dontwarn org.apache.commons.compress.**
+-dontwarn org.tukaani.xz.**
+-dontwarn com.github.luben.zstd.**
+-dontwarn org.brotli.dec.**
+-dontwarn org.objectweb.asm.**
