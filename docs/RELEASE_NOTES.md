@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.4.1 (build 6) - first usable public release
+- Fixes a crash on first launch that affected fresh installs of 0.4.0 (uninstall 0.4.0, then install this).
+- If the app ever stops unexpectedly, the next launch shows what went wrong so it can be reported.
+- Confirmed on a real phone: TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads.
+
+## 0.4.0 (build 5) - withdrawn
+- Crashed on first launch on some phones. Use 0.4.1.
+
 ## 0.3.1 (build 4) - tested build, not published
 - History screen no longer sits against the status bar.
 
