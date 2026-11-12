@@ -11,6 +11,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -81,7 +84,7 @@ internal fun openFile(ctx: Context, f: SavedFile) {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         ctx.startActivity(i)
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         // No app can open it; the file is still in Downloads.
     }
 }
@@ -96,7 +99,7 @@ internal fun shareFile(ctx: Context, f: SavedFile) {
         val chooser = Intent.createChooser(send, "Share video")
         chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         ctx.startActivity(chooser)
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         // Ignore: nothing to share with.
     }
 }
@@ -112,6 +115,7 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
     var isError by remember { mutableStateOf(false) }
     var ytVersion by remember { mutableStateOf("...") }
     var saved by remember { mutableStateOf<SavedFile?>(null) }
+    var crash by remember { mutableStateOf(readCrash(ctx)) }
 
     // On launch: show the yt-dlp version, and refresh it if the last update is over a day old.
     LaunchedEffect(Unit) {
@@ -119,18 +123,34 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
         if (initError == null) {
             busy = true
             status = "Checking for yt-dlp updates..."
-            if (autoUpdateIfDue(ctx)) ytVersion = readYtVersion(ctx)
-            status = ""
-            busy = false
+            try {
+                if (autoUpdateIfDue(ctx)) ytVersion = readYtVersion(ctx)
+            } catch (e: Throwable) {
+                // Update check is optional; ignore failures.
+            } finally {
+                status = ""
+                busy = false
+            }
         }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
     ) {
+        val lastCrash = crash
+        if (lastCrash != null) {
+            Text(
+                "TERX001 stopped unexpectedly last time. Please send this text to the developer:",
+                color = MaterialTheme.colorScheme.error,
+            )
+            SelectionContainer { Text(lastCrash.take(1500), style = MaterialTheme.typography.bodySmall) }
+            OutlinedButton(onClick = { clearCrash(ctx); crash = null }) { Text("Dismiss") }
+            Spacer(Modifier.height(16.dp))
+        }
         Text("TERX001", style = MaterialTheme.typography.headlineLarge, color = Emerald)
         Text("SIDI TECH - video downloader (test build)", style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(24.dp))
@@ -171,7 +191,7 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
                         }
                         saved = result
                         status = "Saved to " + result.path
-                    } catch (e: Exception) {
+                    } catch (e: Throwable) {
                         isError = true
                         status = friendlyError(e)
                     } finally {
@@ -193,7 +213,7 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
                     try {
                         status = updateYtDlp(ctx)
                         ytVersion = readYtVersion(ctx)
-                    } catch (e: Exception) {
+                    } catch (e: Throwable) {
                         isError = true
                         status = "Update failed: " + friendlyError(e)
                     } finally {
