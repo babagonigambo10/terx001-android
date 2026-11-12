@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-11, after v0.4.0 was published and the repo was made public.
+Last updated: 2026-11-12, v0.4.0 crash on the owner's phone; fix build 0.4.1 on main (8be3f42), not yet tagged.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -48,6 +48,15 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- INCIDENT 2026-11-12: the owner installed the signed v0.4.0 release on a fresh install and it crashes on launch
+  ("TERX001 keeps stopping", Xiaomi/Mi phone). Cause not yet confirmed. Suspects: Error types (not Exception) thrown
+  by youtubedl-android init/auto-update on a FIRST install of the R8-minified build (fresh installs of the release build
+  were never tested; earlier tests were updates over existing installs). Fix on main: catch Throwable everywhere,
+  record the crash on the phone and show it in the app on next launch (Crash.kt), scrollable screen, version 0.4.1 (6).
+  Build run 43219763230 succeeded (test-key signed, not tagged). Waiting for the owner to test it. Do NOT tag v0.4.1 or
+  announce until the owner confirms it launches; ask the owner before tagging. The public v0.4.0 pre-release is known
+  broken on at least one phone: tell the owner not to announce it. If 0.4.1 still crashes, ask for the crash text shown
+  in the app (or "View summary" on the Android crash dialog) and consider disabling R8 (`isMinifyEnabled = false`) to test.
 - Last action: made the release key's CI path verify the fingerprint, added automatic GitHub Release creation on `v*`
   tags, rebuilt v0.4.0, published it, made the repo public, added a README download section.
 - Next step (owner-driven):
