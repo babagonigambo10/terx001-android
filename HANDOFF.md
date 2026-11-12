@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-12, v0.4.0 launch crash diagnosed; R8 keep-rule fix on main (6abd34a), not yet tagged.
+Last updated: 2026-11-12, R8 shrinking turned off (93c1641); waiting for the owner to test a fresh install.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -49,7 +49,7 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 
 ## 3. Last action and next step
 - INCIDENT 2026-11-12: the owner installed the signed v0.4.0 release on a fresh install and it crashes on launch
-  ("TERX001 keeps stopping", Xiaomi/Mi phone). CAUSE CONFIRMED from the crash text the app showed on the phone: R8 broke Apache Commons Compress (RuntimeException "class ... is not a concrete class" during the first-run unzip of the bundled engine in YoutubeDL.init). Fix: `-keep class org.apache.commons.** { *; }` in app/proguard-rules.pro (commit 6abd34a, build run 43222298053, succeeded). If it still fails, disable R8 (`isMinifyEnabled = false`).
+  ("TERX001 keeps stopping", Xiaomi/Mi phone). CAUSE CONFIRMED from the crash text the app showed on the phone: R8 broke Apache Commons Compress (RuntimeException "class ... is not a concrete class" during the first-run unzip of the bundled engine in YoutubeDL.init). Fix: `-keep class org.apache.commons.** { *; }` in app/proguard-rules.pro (commit 6abd34a, build run 43222298053, succeeded). Owner then asked to remove shrinking entirely: `isMinifyEnabled = false` and `isShrinkResources = false` are now set in app/build.gradle.kts (commit 93c1641, run 43223406781, release zip 24.2 MB vs 18.4 MB with R8). Keep it off unless the first-install path is re-tested. Not yet tagged; owner must confirm a fresh install works before tagging v0.4.1.
   (Original suspects below were partly right: it only happens on FIRST install.) Suspects: Error types (not Exception) thrown
   by youtubedl-android init/auto-update on a FIRST install of the R8-minified build (fresh installs of the release build
   were never tested; earlier tests were updates over existing installs). Fix on main: catch Throwable everywhere,
