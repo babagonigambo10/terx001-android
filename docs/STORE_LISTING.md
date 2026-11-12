@@ -16,8 +16,7 @@ no ads, no tracking, no server.
 - Small install, about 20 MB
 - Free and open source (GPL-3.0)
 
-Works with links from TikTok, Instagram and Snapchat. Support for X, Facebook, YouTube, Pinterest,
-Reddit and Threads is experimental and may not work for every link.
+Works with links from TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads. Sites change often, so a link may occasionally fail.
 
 Download only content you own or have permission to save. TERX001 is not affiliated with any of the
 services named above.
@@ -26,8 +25,7 @@ services named above.
 Android 10 or newer, 64-bit (arm64) phone.
 
 ## Notes for the owner (not for publishing)
-- Only TikTok, Instagram and Snapchat are confirmed on the owner's phone. Keep the wording above until
-  X, Facebook and YouTube are tested.
+- All nine platforms were confirmed working by the owner on their phone (2026-11-12). Sites change often; re-test before big announcements.
 - Google Play and some other stores restrict downloader apps for these platforms, so approval there is
   uncertain. Review each store's current policy in Stage 5 before submitting.
 - Screenshots to take on the phone: home screen with a detected link, download progress, finished
