@@ -4,9 +4,9 @@ Technical spike: paste a TikTok link, download it on the phone, save it to
 `Download/TERX001`. No backend, no bot token, no secrets.
 
 ## Download
-Latest release: https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0
-Download `TERX001-v0.4.0.apk` (about 20 MB, Android 10+, 64-bit). Verify it against the checksum and signing
-fingerprint on the release page and in the section below.
+Get the latest APK from the Releases page: https://github.com/babagonigambo10/terx001-android/releases
+About 25 MB, Android 10+, 64-bit. Verify it against the checksum on the release page and the signing
+fingerprint in the section below. If you installed 0.4.0, uninstall it first.
 
 ## How it works
 - Kotlin + Jetpack Compose UI.
