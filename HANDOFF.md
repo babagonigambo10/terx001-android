@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-12, v0.4.0 crash on the owner's phone; fix build 0.4.1 on main (8be3f42), not yet tagged.
+Last updated: 2026-11-12, v0.4.0 launch crash diagnosed; R8 keep-rule fix on main (6abd34a), not yet tagged.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -49,7 +49,8 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 
 ## 3. Last action and next step
 - INCIDENT 2026-11-12: the owner installed the signed v0.4.0 release on a fresh install and it crashes on launch
-  ("TERX001 keeps stopping", Xiaomi/Mi phone). Cause not yet confirmed. Suspects: Error types (not Exception) thrown
+  ("TERX001 keeps stopping", Xiaomi/Mi phone). CAUSE CONFIRMED from the crash text the app showed on the phone: R8 broke Apache Commons Compress (RuntimeException "class ... is not a concrete class" during the first-run unzip of the bundled engine in YoutubeDL.init). Fix: `-keep class org.apache.commons.** { *; }` in app/proguard-rules.pro (commit 6abd34a, build run 43222298053, succeeded). If it still fails, disable R8 (`isMinifyEnabled = false`).
+  (Original suspects below were partly right: it only happens on FIRST install.) Suspects: Error types (not Exception) thrown
   by youtubedl-android init/auto-update on a FIRST install of the R8-minified build (fresh installs of the release build
   were never tested; earlier tests were updates over existing installs). Fix on main: catch Throwable everywhere,
   record the crash on the phone and show it in the app on next launch (Crash.kt), scrollable screen, version 0.4.1 (6).
