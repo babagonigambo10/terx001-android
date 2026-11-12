@@ -33,7 +33,7 @@ private val PLATFORMS = listOf(
 fun platformOf(raw: String): String? {
     val uri = try {
         URI(raw.trim())
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         return null
     }
     if (uri.scheme != "https") return null
@@ -99,7 +99,7 @@ suspend fun downloadToDownloads(
             values.clear()
             values.put(MediaStore.Downloads.IS_PENDING, 0)
             resolver.update(target, values, null, null)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             resolver.delete(target, null, null)
             throw e
         }
@@ -128,7 +128,7 @@ suspend fun updateYtDlp(ctx: Context): String = withContext(Dispatchers.IO) {
 suspend fun readYtVersion(ctx: Context): String = withContext(Dispatchers.IO) {
     try {
         YoutubeDL.getInstance().version(ctx) ?: "bundled"
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         "bundled"
     }
 }
@@ -142,7 +142,7 @@ suspend fun autoUpdateIfDue(ctx: Context): Boolean = withContext(Dispatchers.IO)
         YoutubeDL.getInstance().updateYoutubeDL(ctx)
         prefs.edit().putLong("last_update", now).apply()
         true
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         false
     }
 }
