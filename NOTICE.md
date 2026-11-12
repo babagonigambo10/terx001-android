@@ -15,6 +15,7 @@ release build; the build prints the full resolved list in the GitHub Actions log
 | Python runtime (bundled in youtubedl-android) | as packaged by the library | PSF License | https://www.python.org/psf/license/ |
 | Jackson (core, databind, annotations) | 2.11.1 | Apache-2.0 | https://github.com/FasterXML/jackson |
 | Apache Commons IO | 2.5 | Apache-2.0 | https://commons.apache.org/proper/commons-io/ |
+| Apache Commons Compress | 1.12 | Apache-2.0 | https://commons.apache.org/proper/commons-compress/ |
 | AndroidX and Jetpack Compose (Compose BOM) | 2024.10.01 | Apache-2.0 | https://developer.android.com/jetpack |
 | Kotlin standard library, kotlinx.coroutines, JetBrains annotations | 2.0.21 / 1.9.0 / 23.0.0 | Apache-2.0 | https://kotlinlang.org |
 | Google Guava (ListenableFuture, pulled in by AndroidX) | as resolved | Apache-2.0 | https://github.com/google/guava |
