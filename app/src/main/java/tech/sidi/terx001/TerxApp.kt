@@ -14,10 +14,15 @@ class TerxApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        installCrashRecorder(this)
         try {
             YoutubeDL.getInstance().init(this)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             initError = e.message ?: e.javaClass.simpleName
+            try {
+                recordCrash(this, e)
+            } catch (_: Throwable) {
+            }
         }
     }
 }
