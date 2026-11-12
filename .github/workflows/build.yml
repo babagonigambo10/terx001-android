@@ -76,9 +76,9 @@ jobs:
           cat > notes.md <<EOF
           TERX001 $TAG (beta) - free video downloader that runs on your phone. No ads, no accounts, no tracking.
 
-          Install: download $APK, open it, and allow installing unknown apps if Android asks. Needs Android 10 or newer on a 64-bit (arm64) phone. If you installed a test build before, uninstall it once first.
+          Install: download $APK, open it, and allow installing unknown apps if Android asks. Needs Android 10 or newer on a 64-bit (arm64) phone. If you installed v0.4.0 or a test build, uninstall it first.
 
-          Works with TikTok, Instagram and Snapchat links. X, Facebook, YouTube, Pinterest, Reddit and Threads are experimental.
+          Works with TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads links. Sites change often, so a link may occasionally fail; the app updates its download engine daily.
 
           Verify your download:
           - APK SHA-256: $SUM
