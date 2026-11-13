@@ -7,7 +7,7 @@ Technical spike: paste a TikTok link, download it on the phone, save it to
 Website: https://babagonigambo10.github.io/terx001-android/
 
 Get the latest APK from the Releases page: https://github.com/babagonigambo10/terx001-android/releases
-About 24 MB (v0.4.2), Android 10+, 64-bit. Verify it against the checksum on the release page and the signing
+About 24 MB (v0.4.3), Android 10+, 64-bit. Verify it against the checksum on the release page and the signing
 fingerprint in the section below. If you installed 0.4.0, uninstall it first.
 
 ## How it works
