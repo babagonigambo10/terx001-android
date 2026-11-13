@@ -13,7 +13,7 @@ no ads, no tracking, no server.
 - Progress bar, then Open or Share the finished video
 - Download history in the app
 - Keeps its download engine up to date automatically
-- Compact install (about 37 MB at v0.4.1; smaller builds are being tested)
+- Compact install, about 24 MB
 - Free and open source (GPL-3.0)
 
 Works with links from TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads. Sites change often, so a link may occasionally fail.
