@@ -12,8 +12,8 @@ android {
         applicationId = "tech.sidi.terx001"
         minSdk = 29
         targetSdk = 35
-        versionCode = 6
-        versionName = "0.4.1"
+        versionCode = 7
+        versionName = "0.4.2"
         // Spike: arm64 only to keep the APK small. Almost all current phones are arm64.
         ndk { abiFilters += listOf("arm64-v8a") }
     }
