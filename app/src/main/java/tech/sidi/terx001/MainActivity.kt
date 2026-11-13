@@ -152,7 +152,7 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
             Spacer(Modifier.height(16.dp))
         }
         Text("TERX001", style = MaterialTheme.typography.headlineLarge, color = Emerald)
-        Text("SIDI TECH - video downloader (test build)", style = MaterialTheme.typography.bodyMedium)
+        Text("SIDI TECH - free video downloader", style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(24.dp))
 
         OutlinedTextField(
