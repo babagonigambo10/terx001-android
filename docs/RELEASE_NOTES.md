@@ -1,6 +1,9 @@
 # Release notes
 
-## 0.4.2 (build 7) - smaller and easier to use
+## 0.4.3 (build 8) - tidy-up
+- Removes the leftover "(test build)" wording from the main screen. No other changes from 0.4.2.
+
+## 0.4.2 (build 7) - superseded by 0.4.3
 - Paste TikTok's full share text (link plus words and extra links): the app finds the video link by itself.
 - Smaller install, about 24 MB instead of 39 MB.
 
