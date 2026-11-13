@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, website live on GitHub Pages for Google visibility.
+Last updated: 2026-11-13, "(test build)" label removed on main as version 0.4.3 (8), NOT tagged; waiting for the owner to test and approve release.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -48,6 +48,7 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- NEW 2026-11-13: the "(test build)" text on the main screen was hard-coded in MainActivity.kt (line 155) and shipped in v0.4.2. Changed to "SIDI TECH - free video downloader" and bumped to versionName 0.4.3 / versionCode 8 (commit 927f0f7, Build APKs run 43409596226 succeeded, test-key signed). v0.4.3 is NOT tagged or published. Do NOT tag v0.4.3 until the owner installs the build, confirms it opens and downloads, and says to release. Latest published release is still v0.4.2. Store screenshots (Aptoide, APKPure, Softonic) should be taken from v0.4.3, not v0.4.2.
 - 2026-11-13: owner asked for the app to be visible in Google search. Built a static site in `docs/` (index.html with
   title/description/canonical/Open Graph/JSON-LD SoftwareApplication, privacy.html, terms.html, sitemap.xml, .nojekyll) and enabled
   GitHub Pages (main, /docs): https://babagonigambo10.github.io/terx001-android/ . Repo homepage field and README link point to it.
