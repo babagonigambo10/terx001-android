@@ -12,3 +12,7 @@
 -dontwarn com.github.luben.zstd.**
 -dontwarn org.brotli.dec.**
 -dontwarn org.objectweb.asm.**
+
+# Shrink only: remove unused code but do not optimise or rename (optimisation broke the first-run unzip).
+-dontobfuscate
+-dontoptimize
