@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val initError = (application as TerxApp).initError
         val sharedUrl = if (intent?.action == Intent.ACTION_SEND) {
-            intent.getStringExtra(Intent.EXTRA_TEXT)?.let { extractUrl(it) }
+            intent.getStringExtra(Intent.EXTRA_TEXT)?.let { findVideoUrl(it) ?: extractUrl(it) }
         } else null
         setContent {
             MaterialTheme(
@@ -157,10 +157,14 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
 
         OutlinedTextField(
             value = url,
-            onValueChange = { url = it },
+            onValueChange = { v ->
+                // Pasted share text ("link + words + other links"): keep only the video link.
+                val found = findVideoUrl(v)
+                url = if (found != null && v.length > found.length && v.any { it.isWhitespace() }) found else v
+            },
             label = { Text("Video link") },
             supportingText = {
-                val p = platformOf(url)
+                val p = findVideoUrl(url)?.let { platformOf(it) }
                 if (p != null) Text("Detected: $p")
             },
             singleLine = true,
@@ -173,7 +177,8 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
             enabled = !busy && initError == null,
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                if (platformOf(url) == null) {
+                val link = findVideoUrl(url)
+                if (link == null) {
                     isError = true
                     status = "Paste a full https link from TikTok, Instagram, Facebook, X, YouTube, Pinterest, Reddit, Snapchat or Threads."
                     return@Button
@@ -185,7 +190,7 @@ private fun HomeScreen(initError: String?, initialUrl: String, onOpenHistory: ()
                 status = "Starting..."
                 scope.launch {
                     try {
-                        val result = downloadToDownloads(ctx, url) { p, _ ->
+                        val result = downloadToDownloads(ctx, link) { p, _ ->
                             progress = (p / 100f).coerceIn(0f, 1f)
                             status = "Downloading... " + p.toInt() + "%"
                         }
