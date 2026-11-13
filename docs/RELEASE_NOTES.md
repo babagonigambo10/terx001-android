@@ -1,6 +1,10 @@
 # Release notes
 
-## 0.4.1 (build 6) - first usable public release
+## 0.4.2 (build 7) - smaller and easier to use
+- Paste TikTok's full share text (link plus words and extra links): the app finds the video link by itself.
+- Smaller install, about 24 MB instead of 39 MB.
+
+## 0.4.1 (build 6) - superseded by 0.4.2
 - Fixes a crash on first launch that affected fresh installs of 0.4.0 (uninstall 0.4.0, then install this).
 - If the app ever stops unexpectedly, the next launch shows what went wrong so it can be reported.
 - Confirmed on a real phone: TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads.
