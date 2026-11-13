@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, v0.4.1 published (unshrunk, 39 MB); shrink-only 24 MB test build on main awaiting the owner's fresh-install test.
+Last updated: 2026-11-13, 0.4.2 test build on main (b06d9a6): pasted share text now works; not tagged.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -48,6 +48,10 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- 2026-11-13: owner found that pasting TikTok's full share text (link + words + a second tiktok.com link) gave
+  "Paste a full https link". Fixed: `findVideoUrl()` in Downloader.kt picks the first supported link in any pasted/shared text
+  (field also cleans itself on paste). Version 0.4.2 (7) on main, commit b06d9a6, run 43371682477 succeeded, uses the 24 MB
+  shrink-only R8 build. Not tagged: needs the owner's fresh-install confirmation and a go-ahead before v0.4.2 is published.
 - STATUS 2026-11-13: owner confirmed on their phone that a fresh install launches and TikTok, Instagram, Snapchat, Facebook, X,
   YouTube, Pinterest, Reddit and Threads all download. v0.4.1 was tagged and published (R8 off => APK is 39.1 MB, bigger than
   the 21 MB the owner wanted). Test build on main (commit edf19ab, run 43367727415): R8 in shrink-only mode (`-dontobfuscate
