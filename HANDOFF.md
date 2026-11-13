@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, 0.4.2 test build on main (b06d9a6): pasted share text now works; not tagged.
+Last updated: 2026-11-13, v0.4.2 published (24 MB, signed); owner confirmed it works.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -11,7 +11,7 @@ It is the Android companion to the Telegram bot @TERX001bot (separate repo
 `babagonigambo10/terx001-bot`, hosted on Railway; do not touch it from here).
 
 - Repo: github.com/babagonigambo10/terx001-android (PUBLIC since 2026-11-11, owner approved; do not change visibility)
-- Current version: 0.4.1 (versionCode 6), package `tech.sidi.terx001`; published as GitHub pre-release v0.4.1 (tag -> 8fa2f53, release APK 39,137,333 bytes, SHA-256 9033a58d187c946cd31af5cbbf97995479b48a2fb603d048eb17a5b59d9b53eb). v0.4.0 release is marked withdrawn.
+- Current version: 0.4.2 (versionCode 7), package `tech.sidi.terx001`; published as GitHub pre-release v0.4.2 (tag -> 6357e30). Release APK TERX001-v0.4.2.apk = 23,956,989 bytes, SHA-256 77d1ac555290f20265d9afe2ffba6e9025664f8738577ed1051cf90c40bded0a. Release page: https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.2 . v0.4.1 (39 MB) is marked superseded; v0.4.0 is withdrawn (crashed on first launch).
 - Stack: Kotlin, Jetpack Compose (Compose BOM 2024.10.01), AGP 8.7.3, Gradle 8.9 (set in the workflow,
   there is no Gradle wrapper), Kotlin 2.0.21, JDK 17, compileSdk/targetSdk 35, minSdk 29, arm64-v8a only
 - Downloader: youtubedl-android `io.github.junkfood02.youtubedl-android:library:0.18.1` (GPL-3.0),
@@ -48,6 +48,9 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- 2026-11-13: owner confirmed 0.4.2 works on their phone; tagged and published v0.4.2 (R8 shrink-only, 24 MB). Remaining owner
+  action: post the announcement on @TERX001 (Claude cannot; never touch @TERX001bot). Optional later: Stage 5 store research,
+  tighten NOTICE.md for the bundled Python/yt-dlp bundle, add screenshots, consider armeabi-v7a if 32-bit phones matter.
 - 2026-11-13: owner found that pasting TikTok's full share text (link + words + a second tiktok.com link) gave
   "Paste a full https link". Fixed: `findVideoUrl()` in Downloader.kt picks the first supported link in any pasted/shared text
   (field also cleans itself on paste). Version 0.4.2 (7) on main, commit b06d9a6, run 43371682477 succeeded, uses the 24 MB
