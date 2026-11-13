@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-12, R8 shrinking turned off (93c1641); waiting for the owner to test a fresh install.
+Last updated: 2026-11-13, v0.4.1 published (unshrunk, 39 MB); shrink-only 24 MB test build on main awaiting the owner's fresh-install test.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -11,7 +11,7 @@ It is the Android companion to the Telegram bot @TERX001bot (separate repo
 `babagonigambo10/terx001-bot`, hosted on Railway; do not touch it from here).
 
 - Repo: github.com/babagonigambo10/terx001-android (PUBLIC since 2026-11-11, owner approved; do not change visibility)
-- Current version: 0.4.0 (versionCode 5), package `tech.sidi.terx001`; published as GitHub pre-release v0.4.0 (tag -> commit 1df4632)
+- Current version: 0.4.1 (versionCode 6), package `tech.sidi.terx001`; published as GitHub pre-release v0.4.1 (tag -> 8fa2f53, release APK 39,137,333 bytes, SHA-256 9033a58d187c946cd31af5cbbf97995479b48a2fb603d048eb17a5b59d9b53eb). v0.4.0 release is marked withdrawn.
 - Stack: Kotlin, Jetpack Compose (Compose BOM 2024.10.01), AGP 8.7.3, Gradle 8.9 (set in the workflow,
   there is no Gradle wrapper), Kotlin 2.0.21, JDK 17, compileSdk/targetSdk 35, minSdk 29, arm64-v8a only
 - Downloader: youtubedl-android `io.github.junkfood02.youtubedl-android:library:0.18.1` (GPL-3.0),
@@ -48,6 +48,12 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- STATUS 2026-11-13: owner confirmed on their phone that a fresh install launches and TikTok, Instagram, Snapchat, Facebook, X,
+  YouTube, Pinterest, Reddit and Threads all download. v0.4.1 was tagged and published (R8 off => APK is 39.1 MB, bigger than
+  the 21 MB the owner wanted). Test build on main (commit edf19ab, run 43367727415): R8 in shrink-only mode (`-dontobfuscate
+  -dontoptimize` + commons keep rules) => release APK 23,953,857 bytes (24.0 MB). NEXT: owner uninstalls and fresh-installs that
+  APK; if it launches and downloads, tag v0.4.2 (ask the owner first) and publish; then withdraw v0.4.1 if desired. README and
+  docs/STORE_LISTING.md currently say about 37 MB (v0.4.1); update them when the smaller build ships. The owner has not yet posted on @TERX001.
 - INCIDENT 2026-11-12: the owner installed the signed v0.4.0 release on a fresh install and it crashes on launch
   ("TERX001 keeps stopping", Xiaomi/Mi phone). CAUSE CONFIRMED from the crash text the app showed on the phone: R8 broke Apache Commons Compress (RuntimeException "class ... is not a concrete class" during the first-run unzip of the bundled engine in YoutubeDL.init). Fix: `-keep class org.apache.commons.** { *; }` in app/proguard-rules.pro (commit 6abd34a, build run 43222298053, succeeded). Owner then asked to remove shrinking entirely: `isMinifyEnabled = false` and `isShrinkResources = false` are now set in app/build.gradle.kts (commit 93c1641, run 43223406781, release zip 24.2 MB vs 18.4 MB with R8). Keep it off unless the first-install path is re-tested. Not yet tagged; owner must confirm a fresh install works before tagging v0.4.1.
   (Original suspects below were partly right: it only happens on FIRST install.) Suspects: Error types (not Exception) thrown
