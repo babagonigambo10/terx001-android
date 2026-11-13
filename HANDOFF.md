@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, v0.4.3 published (APK 23,956,981 bytes, SHA-256 fa68216f...233f, signed with the release key). v0.4.2 marked superseded. Owner will take store screenshots and post the announcement.
+Last updated: 2026-11-13, v0.4.3 published; Aptoide Connect submission is Pending review.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -11,7 +11,7 @@ It is the Android companion to the Telegram bot @TERX001bot (separate repo
 `babagonigambo10/terx001-bot`, hosted on Railway; do not touch it from here).
 
 - Repo: github.com/babagonigambo10/terx001-android (PUBLIC since 2026-11-11, owner approved; do not change visibility)
-- Current version: 0.4.2 (versionCode 7), package `tech.sidi.terx001`; published as GitHub pre-release v0.4.2 (tag -> 6357e30). Release APK TERX001-v0.4.2.apk = 23,956,989 bytes, SHA-256 77d1ac555290f20265d9afe2ffba6e9025664f8738577ed1051cf90c40bded0a. Release page: https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.2 . v0.4.1 (39 MB) is marked superseded; v0.4.0 is withdrawn (crashed on first launch).
+- Current version: 0.4.3 (versionCode 8), published as GitHub pre-release v0.4.3 (APK 23,956,981 bytes, SHA-256 fa68216fddea2ece7ec9fa885b82e610c70df6aa1e979b4fb2b2d70912cb233f). Earlier releases: v0.4.2, v0.4.1 (superseded), v0.4.0 (withdrawn).
 - Stack: Kotlin, Jetpack Compose (Compose BOM 2024.10.01), AGP 8.7.3, Gradle 8.9 (set in the workflow,
   there is no Gradle wrapper), Kotlin 2.0.21, JDK 17, compileSdk/targetSdk 35, minSdk 29, arm64-v8a only
 - Downloader: youtubedl-android `io.github.junkfood02.youtubedl-android:library:0.18.1` (GPL-3.0),
@@ -48,6 +48,12 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- 2026-11-13 (later): v0.4.3 IS published (the line below saying v0.4.2 is the latest release is out of date). The owner submitted
+  TERX001 v0.4.3 to Aptoide Connect (package tech.sidi.terx001, APK URL from the GitHub release); status Pending. Countries: all
+  except Brazil, Indonesia, Singapore, Thailand (Google developer verification enforced there; owner has NOT registered with Google,
+  a $25 fee, decision pending, global rollout 2027). Do not click "I have already done it" in Aptoide. Assets in docs/assets:
+  icon-512.png and feature-graphic-1024x500.png. README and docs/index.html now say 0.4.3. Still pending: APKPure/Softonic,
+  Google Search Console verification, announcement on @TERX001 (owner).
 - NEW 2026-11-13: the "(test build)" text on the main screen was hard-coded in MainActivity.kt (line 155) and shipped in v0.4.2. Changed to "SIDI TECH - free video downloader" and bumped to versionName 0.4.3 / versionCode 8 (commit 927f0f7, Build APKs run 43409596226 succeeded, test-key signed). OWNER APPROVED RELEASE on 2026-11-13 (tested the build, everything works). v0.4.3 tagged; CI publishes it. NOTE: never put [skip ci] in the message of a commit you are about to tag, GitHub then skips the tag build. Do NOT tag v0.4.3 until the owner installs the build, confirms it opens and downloads, and says to release. Latest published release is still v0.4.2. Store screenshots (Aptoide, APKPure, Softonic) should be taken from v0.4.3, not v0.4.2.
 - 2026-11-13: owner asked for the app to be visible in Google search. Built a static site in `docs/` (index.html with
   title/description/canonical/Open Graph/JSON-LD SoftwareApplication, privacy.html, terms.html, sitemap.xml, .nojekyll) and enabled
