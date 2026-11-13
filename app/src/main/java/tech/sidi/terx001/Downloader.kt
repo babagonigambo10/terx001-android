@@ -44,6 +44,16 @@ fun platformOf(raw: String): String? {
     return null
 }
 
+/**
+ * Finds the video link inside pasted or shared text. Ignores surrounding words and any other
+ * links (for example the "Download TikTok Lite" link TikTok adds): the first link that belongs
+ * to a supported site wins.
+ */
+fun findVideoUrl(text: String): String? =
+    Regex("https://[^\\s<>\"']+").findAll(text)
+        .map { it.value.trimEnd('.', ',', ')', ']', '!', '?', ';', ':') }
+        .firstOrNull { platformOf(it) != null }
+
 /** Pulls the first https link out of shared text. */
 fun extractUrl(text: String): String? = Regex("https://\\S+").find(text)?.value
 
