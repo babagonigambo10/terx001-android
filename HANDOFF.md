@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, owner approved v0.4.3; tag v0.4.3 pushed so CI signs and publishes it (verify the Releases page).
+Last updated: 2026-11-13, v0.4.3 published (APK 23,956,981 bytes, SHA-256 fa68216f...233f, signed with the release key). v0.4.2 marked superseded. Owner will take store screenshots and post the announcement.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
