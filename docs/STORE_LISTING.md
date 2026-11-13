@@ -2,7 +2,7 @@
 
 Name: TERX001
 Developer: SIDI TECH
-Short description (80 chars): Fast, free video downloader. No ads, no accounts, small app.
+Short description (80 chars): Fast, free video downloader. No ads, no accounts, no tracking.
 
 ## Full description
 TERX001 saves videos from links you paste or share. It runs entirely on your phone: no account,
@@ -13,7 +13,7 @@ no ads, no tracking, no server.
 - Progress bar, then Open or Share the finished video
 - Download history in the app
 - Keeps its download engine up to date automatically
-- Small install, about 20 MB
+- Compact install (about 37 MB at v0.4.1; smaller builds are being tested)
 - Free and open source (GPL-3.0)
 
 Works with links from TikTok, Instagram, Snapchat, Facebook, X, YouTube, Pinterest, Reddit and Threads. Sites change often, so a link may occasionally fail.
