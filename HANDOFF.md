@@ -1,7 +1,7 @@
 # HANDOFF - TERX001 Android
 
 Read this first. Keep it current: update it after every commit (see AGENTS.md).
-Last updated: 2026-11-13, v0.4.2 published (24 MB, signed); owner confirmed it works.
+Last updated: 2026-11-13, website live on GitHub Pages for Google visibility.
 
 ## 1. Project
 TERX001 is a free video downloader for Android by SIDI TECH. The user pastes a link (or shares one
@@ -48,6 +48,12 @@ Plan agreed with the owner: six stages toward a public GPL-3.0 release. "Waiting
 | 6. Public launch (make repo public, publish signed APK, announce on @TERX001) | REPO PUBLIC + RELEASE PUBLISHED; announcement pending | Owner said "Go" on 2026-11-11. Repo made public; GitHub pre-release v0.4.0 published (https://github.com/babagonigambo10/terx001-android/releases/tag/v0.4.0). The @TERX001 post is for the owner to make (Claude has no tool for it). Stage 5 store research not done; no store submissions. |
 
 ## 3. Last action and next step
+- 2026-11-13: owner asked for the app to be visible in Google search. Built a static site in `docs/` (index.html with
+  title/description/canonical/Open Graph/JSON-LD SoftwareApplication, privacy.html, terms.html, sitemap.xml, .nojekyll) and enabled
+  GitHub Pages (main, /docs): https://babagonigambo10.github.io/terx001-android/ . Repo homepage field and README link point to it.
+  When a new version ships, update softwareVersion/fileSize/download text in docs/index.html and the sitemap lastmod.
+  PENDING (owner): add the site in Google Search Console (URL-prefix property), verify with the HTML meta tag method, send the tag
+  to Claude to add to docs/index.html <head>, then submit sitemap.xml and request indexing of the home page.
 - 2026-11-13: owner confirmed 0.4.2 works on their phone; tagged and published v0.4.2 (R8 shrink-only, 24 MB). Remaining owner
   action: post the announcement on @TERX001 (Claude cannot; never touch @TERX001bot). Optional later: Stage 5 store research,
   tighten NOTICE.md for the bundled Python/yt-dlp bundle, add screenshots, consider armeabi-v7a if 32-bit phones matter.
